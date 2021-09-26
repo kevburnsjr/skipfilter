@@ -1,5 +1,6 @@
-/*
-package skipfilter provides a data structure that combines a skiplist with a roaring bitmap cache.
+# Skipfilter
+
+This package provides a data structure that combines a skiplist with a roaring bitmap cache.
 
 This library was created to efficiently filter a multi-topic message input stream against a set of subscribers,
 each having a list of topic subscriptions expressed as regular expressions. Idealy, each subscriber should test
@@ -11,6 +12,4 @@ receive messages on the topic.
 
 Filter bitmaps are stored in an LRU cache of variable size (default 100,000).
 
-This package is not theadsafe.
-*/
-package skipfilter
+This package is theadsafe.
