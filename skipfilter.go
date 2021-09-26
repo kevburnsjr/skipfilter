@@ -85,9 +85,10 @@ func (sf *SkipFilter) Walk(start uint64, callback func(val interface{}) bool) ui
 	var i uint64
 	var id = start
 	var prev uint64
+	var first = true
 	el, ok := sf.list.FindGreaterOrEqual(&entry{id: start})
 	for ok && el != nil {
-		if id = el.GetValue().(*entry).id; id < prev {
+		if id = el.GetValue().(*entry).id; !first && id <= prev {
 			// skiplist loops back to first element so we have to detect loop and break manually
 			id = prev + 1
 			break
@@ -99,6 +100,7 @@ func (sf *SkipFilter) Walk(start uint64, callback func(val interface{}) bool) ui
 		}
 		prev = id
 		el = sf.list.Next(el)
+		first = false
 	}
 	return id
 }

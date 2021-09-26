@@ -153,5 +153,33 @@ func TestSkipFilter(t *testing.T) {
 				t.Fatalf(`Expected WalkAll to return cursor "10", received (%d)`, id)
 			}
 		})
+		sf = New(modTest, 10)
+		t.Run("empty", func(t *testing.T) {
+			var n uint64
+			id := sf.Walk(0, func(i interface{}) bool {
+				n++
+				return true
+			})
+			if n != 0 {
+				t.Fatalf("Expected WalkAll to execute callback 0 times, received (%d)", n)
+			}
+			if id != 0 {
+				t.Fatalf(`Expected WalkAll to return cursor "0", received (%d)`, id)
+			}
+		})
+		t.Run("one", func(t *testing.T) {
+			sf.Add(0)
+			var n uint64
+			id := sf.Walk(0, func(i interface{}) bool {
+				n++
+				return true
+			})
+			if n != 1 {
+				t.Fatalf("Expected WalkAll to execute callback 1 time, received (%d)", n)
+			}
+			if id != 1 {
+				t.Fatalf(`Expected WalkAll to return cursor "1", received (%d)`, id)
+			}
+		})
 	})
 }
