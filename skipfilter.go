@@ -116,8 +116,9 @@ func (sf *SkipFilter) getFilter(k interface{}) *filter {
 	}
 	var id uint64
 	var prev uint64
+	var first = true
 	for el, ok := sf.list.FindGreaterOrEqual(&entry{id: f.i}); ok && el != nil; el = sf.list.Next(el) {
-		if id = el.GetValue().(*entry).id; id < prev {
+		if id = el.GetValue().(*entry).id; !first && id <= prev {
 			// skiplist loops back to first element so we have to detect loop and break manually
 			break
 		}
@@ -125,6 +126,7 @@ func (sf *SkipFilter) getFilter(k interface{}) *filter {
 			f.set.Add(id)
 		}
 		prev = id
+		first = false
 	}
 	f.i = sf.i
 	return f
