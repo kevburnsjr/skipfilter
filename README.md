@@ -2,6 +2,10 @@
 
 This package provides a data structure that combines a skiplist with a roaring bitmap cache.
 
+[![GoDoc](https://godoc.org/github.com/kevburnsjr/skipfilter?status.svg)](https://godoc.org/github.com/kevburnsjr/skipfilter)
+[![Go Report Card](https://goreportcard.com/badge/github.com/kevburnsjr/skipfilter?1)](https://goreportcard.com/report/github.com/kevburnsjr/skipfilter)
+[![Code Coverage](http://gocover.io/_badge/github.com/kevburnsjr/skipfilter?1)](http://gocover.io/github.com/kevburnsjr/skipfilter)
+
 This library was created to efficiently filter a multi-topic message input stream against a set of subscribers,
 each having a list of topic subscriptions expressed as regular expressions. Idealy, each subscriber should test
 each topic at most once to determine whether it wants to receive messages from the topic.

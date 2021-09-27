@@ -183,3 +183,17 @@ func TestSkipFilter(t *testing.T) {
 		})
 	})
 }
+
+func TestEntry(t *testing.T) {
+	e := &entry{123, "test"}
+	t.Run("ExtractKey", func(t *testing.T) {
+		if e.ExtractKey() != float64(123) {
+			t.Fatalf(`Expected ExtractKey to return 123, received (%f)`, e.ExtractKey())
+		}
+	})
+	t.Run("String", func(t *testing.T) {
+		if e.String() != "              7b" {
+			t.Fatalf(`Expected ExtractKey to return "              7b", received (%s)`, e.String())
+		}
+	})
+}

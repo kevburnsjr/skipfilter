@@ -11,10 +11,10 @@ import (
 	"github.com/hashicorp/golang-lru"
 )
 
+// SkipFilter combines a skip list with an lru cache of roaring bitmaps
 type SkipFilter struct {
 	i     uint64
 	idx   map[interface{}]uint64
-	set   *roaring64.Bitmap
 	list  skiplist.SkipList
 	cache *lru.Cache
 	test  func(interface{}, interface{}) bool
@@ -32,7 +32,6 @@ func New(test func(value interface{}, filter interface{}) bool, size int) *SkipF
 	cache, _ := lru.New(size)
 	return &SkipFilter{
 		idx:   make(map[interface{}]uint64),
-		set:   roaring64.New(),
 		list:  skiplist.New(),
 		cache: cache,
 		test:  test,
@@ -45,7 +44,6 @@ func (sf *SkipFilter) Add(value interface{}) {
 	defer sf.mutex.Unlock()
 	el := &entry{sf.i, value}
 	sf.list.Insert(el)
-	sf.set.Add(sf.i)
 	sf.idx[value] = sf.i
 	sf.i++
 }
@@ -56,7 +54,6 @@ func (sf *SkipFilter) Remove(value interface{}) {
 	defer sf.mutex.Unlock()
 	if id, ok := sf.idx[value]; ok {
 		sf.list.Delete(&entry{id: id})
-		sf.set.Remove(id)
 		delete(sf.idx, value)
 	}
 }
